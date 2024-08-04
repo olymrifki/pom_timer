@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="flex min-h-screen justify-center items-center bg-slate-500">
+        <div class="w-64 h-64  bg-fuchsia-200 flex flex-col items-center">
+            <h1 class="text-2xl mt-4">Pomodoro Timer</h1>
+            <div class="font-normal py-10 font text-4xl" id="timer">25:00</div>
+            <div class="mt-4">
+                <button class="mx-1.5 w-16 px-2 bg-green-600 hover:bg-green-500 active:bg-green-700" type="button"
+                    id="start_pause" onclick="start_timer()">Start</button>
+                <button class=" mx-1.5 w-16 px-2 bg-red-600 hover:bg-red-500 active:bg-red-700" type="button" id="stop"
+                    onclick="stop_timer()">Stop</button>
+                <button class="mx-1.5 w-16 px-2 bg-slate-500 hover:bg-slate-400 active:bg-slate-600" type="button"
+                    id="reset" onclick="reset_timer()">Reset</button>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        START_MINUTE = 0
+        START_SECOND = 3
+        timer_interval = null
+        reset_timer()
+        function stop_timer() {
+            if (timer_interval) {
+                clearInterval(timer_interval)
+            }
+            timer_interval = null
+        }
+        function start_timer() {
+            if (timer_interval) {
+                return
+            }
+            timer_interval = setInterval(function () {
+                if (second == 0) {
+                    minute -= 1
+                    second = 59
+                } else {
+                    second -= 1
+                }
+                if (second == 0 && minute == 0) {
+                    timeout()
+                }
+                display_to_timer(minute, second)
+            }, 1000)
+        }
+        function reset_timer() {
+            stop_timer()
+            minute = START_MINUTE
+            second = START_SECOND
+            display_to_timer(minute, second)
+        }
+        function timeout() {
+            alert("Session finished!")
+            stop_timer()
+        }
+        function display_to_timer(minute, second) {
+            if (second < 10) {
+                second_display = ":0" + second
+            } else {
+                second_display = ":" + second
+            }
+            if (minute < 10) {
+                minute_display = "0" + minute
+            } else {
+                minute_display = minute
+            }
+            timer = document.getElementById("timer")
+            timer.innerHTML = minute_display + second_display
+        }
+    </script>
+</body>
+
+</html>
